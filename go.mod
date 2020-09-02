@@ -6,5 +6,4 @@ require (
 	github.com/facebook/ent v0.4.2
 	github.com/gin-gonic/gin v1.6.3
 	github.com/mattn/go-sqlite3 v1.14.2
-	github.com/opentracing/opentracing-go v1.2.0
 )
