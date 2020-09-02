@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  {{ template "header.html" }}
+  <style>
+    .fieldError {
+      border-color: #bd2130;
+    }
+  </style>
+  <body>
+    <div class="container">
+      {{ template "bodyHeader.html" }}
+      <form role="form" action="/members/new" method="post">
+        <div class="form-group">
+          <label>이름</label>
+          <input
+            type="text"
+            name="name"
+            class="form-control"
+            placeholder="이름을 입력하세요"
+          />
+        </div>
+        <div class="form-group">
+          <label for="city">도시</label>
+          <input
+            type="text"
+            name="city"
+            class="form-control"
+            placeholder="도시를 입력하세요"
+          />
+        </div>
+        <div class="form-group">
+          <label for="street">거리</label>
+          <input
+            type="text"
+            name="street"
+            class="form-control"
+            placeholder="거리를 입력하세요"
+          />
+        </div>
+        <div class="form-group">
+          <label for="zipcode">우편번호</label>
+          <input
+            type="text"
+            name="zipcode"
+            class="form-control"
+            placeholder="우편번호를 입력하세요"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      <br />
+      {{ template "footer.html" }}
+    </div>
+    <!-- /container -->
+  </body>
+</html>

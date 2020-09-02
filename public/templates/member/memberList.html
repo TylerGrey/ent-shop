@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  {{ template "header.html" }}
+  <body>
+    <div class="container">
+      {{ template "bodyHeader.html" }}
+      <div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>이름</th>
+              <th>도시</th>
+              <th>주소</th>
+              <th>우편번호</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{ with .Members }} {{ range .}}
+            <tr>
+              <td>{{.ID}}</td>
+              <td>{{.Name}}</td>
+              <td>{{.City}}</td>
+              <td>{{.Street}}</td>
+              <td>{{.Zipcode}}</td>
+            </tr>
+            {{ end }} {{ end }}
+          </tbody>
+        </table>
+      </div>
+      {{ template "footer.html" }}
+    </div>
+    <!-- /container -->
+  </body>
+</html>
