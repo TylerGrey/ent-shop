@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  {{ template "header.html" }}
+  <body>
+    <div class="container">
+      {{ template "bodyHeader.html" }}
+      <div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>상품명</th>
+              <th>가격</th>
+              <th>재고수량</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{ with .Items }} {{ range .}}
+            <tr>
+              <td>{{.ID}}</td>
+              <td>{{.Name}}</td>
+              <td>{{.Price}}</td>
+              <td>{{.StockQuantity}}</td>
+              <td>
+                <a
+                  href="/items/edit/{{.ID}}"
+                  class="btn btn-primary"
+                  role="button"
+                >
+                  수정
+                </a>
+              </td>
+            </tr>
+            {{ end }} {{ end }}
+          </tbody>
+        </table>
+      </div>
+      {{ template "footer.html" }}
+    </div>
+    <!-- /container -->
+  </body>
+</html>

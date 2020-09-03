@@ -1349,6 +1349,8 @@ type ItemMutation struct {
 	stockQuantity     *int32
 	addstockQuantity  *int32
 	dtype             *item.Dtype
+	author            *string
+	isbn              *string
 	clearedFields     map[string]struct{}
 	categories        map[int]struct{}
 	removedcategories map[int]struct{}
@@ -1697,6 +1699,80 @@ func (m *ItemMutation) ResetDtype() {
 	m.dtype = nil
 }
 
+// SetAuthor sets the author field.
+func (m *ItemMutation) SetAuthor(s string) {
+	m.author = &s
+}
+
+// Author returns the author value in the mutation.
+func (m *ItemMutation) Author() (r string, exists bool) {
+	v := m.author
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAuthor returns the old author value of the Item.
+// If the Item object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *ItemMutation) OldAuthor(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldAuthor is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldAuthor requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAuthor: %w", err)
+	}
+	return oldValue.Author, nil
+}
+
+// ResetAuthor reset all changes of the "author" field.
+func (m *ItemMutation) ResetAuthor() {
+	m.author = nil
+}
+
+// SetIsbn sets the isbn field.
+func (m *ItemMutation) SetIsbn(s string) {
+	m.isbn = &s
+}
+
+// Isbn returns the isbn value in the mutation.
+func (m *ItemMutation) Isbn() (r string, exists bool) {
+	v := m.isbn
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIsbn returns the old isbn value of the Item.
+// If the Item object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *ItemMutation) OldIsbn(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldIsbn is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldIsbn requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIsbn: %w", err)
+	}
+	return oldValue.Isbn, nil
+}
+
+// ResetIsbn reset all changes of the "isbn" field.
+func (m *ItemMutation) ResetIsbn() {
+	m.isbn = nil
+}
+
 // AddCategoryIDs adds the categories edge to Category by ids.
 func (m *ItemMutation) AddCategoryIDs(ids ...int) {
 	if m.categories == nil {
@@ -1753,7 +1829,7 @@ func (m *ItemMutation) Type() string {
 // this mutation. Note that, in order to get all numeric
 // fields that were in/decremented, call AddedFields().
 func (m *ItemMutation) Fields() []string {
-	fields := make([]string, 0, 6)
+	fields := make([]string, 0, 8)
 	if m.created_at != nil {
 		fields = append(fields, item.FieldCreatedAt)
 	}
@@ -1771,6 +1847,12 @@ func (m *ItemMutation) Fields() []string {
 	}
 	if m.dtype != nil {
 		fields = append(fields, item.FieldDtype)
+	}
+	if m.author != nil {
+		fields = append(fields, item.FieldAuthor)
+	}
+	if m.isbn != nil {
+		fields = append(fields, item.FieldIsbn)
 	}
 	return fields
 }
@@ -1792,6 +1874,10 @@ func (m *ItemMutation) Field(name string) (ent.Value, bool) {
 		return m.StockQuantity()
 	case item.FieldDtype:
 		return m.Dtype()
+	case item.FieldAuthor:
+		return m.Author()
+	case item.FieldIsbn:
+		return m.Isbn()
 	}
 	return nil, false
 }
@@ -1813,6 +1899,10 @@ func (m *ItemMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldStockQuantity(ctx)
 	case item.FieldDtype:
 		return m.OldDtype(ctx)
+	case item.FieldAuthor:
+		return m.OldAuthor(ctx)
+	case item.FieldIsbn:
+		return m.OldIsbn(ctx)
 	}
 	return nil, fmt.Errorf("unknown Item field %s", name)
 }
@@ -1863,6 +1953,20 @@ func (m *ItemMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDtype(v)
+		return nil
+	case item.FieldAuthor:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAuthor(v)
+		return nil
+	case item.FieldIsbn:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIsbn(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Item field %s", name)
@@ -1958,6 +2062,12 @@ func (m *ItemMutation) ResetField(name string) error {
 		return nil
 	case item.FieldDtype:
 		m.ResetDtype()
+		return nil
+	case item.FieldAuthor:
+		m.ResetAuthor()
+		return nil
+	case item.FieldIsbn:
+		m.ResetIsbn()
 		return nil
 	}
 	return fmt.Errorf("unknown Item field %s", name)

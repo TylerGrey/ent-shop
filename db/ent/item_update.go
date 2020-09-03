@@ -73,6 +73,18 @@ func (iu *ItemUpdate) SetDtype(i item.Dtype) *ItemUpdate {
 	return iu
 }
 
+// SetAuthor sets the author field.
+func (iu *ItemUpdate) SetAuthor(s string) *ItemUpdate {
+	iu.mutation.SetAuthor(s)
+	return iu
+}
+
+// SetIsbn sets the isbn field.
+func (iu *ItemUpdate) SetIsbn(s string) *ItemUpdate {
+	iu.mutation.SetIsbn(s)
+	return iu
+}
+
 // AddCategoryIDs adds the categories edge to Category by ids.
 func (iu *ItemUpdate) AddCategoryIDs(ids ...int) *ItemUpdate {
 	iu.mutation.AddCategoryIDs(ids...)
@@ -236,6 +248,20 @@ func (iu *ItemUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: item.FieldDtype,
 		})
 	}
+	if value, ok := iu.mutation.Author(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: item.FieldAuthor,
+		})
+	}
+	if value, ok := iu.mutation.Isbn(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: item.FieldIsbn,
+		})
+	}
 	if nodes := iu.mutation.RemovedCategoriesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
@@ -333,6 +359,18 @@ func (iuo *ItemUpdateOne) AddStockQuantity(i int32) *ItemUpdateOne {
 // SetDtype sets the dtype field.
 func (iuo *ItemUpdateOne) SetDtype(i item.Dtype) *ItemUpdateOne {
 	iuo.mutation.SetDtype(i)
+	return iuo
+}
+
+// SetAuthor sets the author field.
+func (iuo *ItemUpdateOne) SetAuthor(s string) *ItemUpdateOne {
+	iuo.mutation.SetAuthor(s)
+	return iuo
+}
+
+// SetIsbn sets the isbn field.
+func (iuo *ItemUpdateOne) SetIsbn(s string) *ItemUpdateOne {
+	iuo.mutation.SetIsbn(s)
 	return iuo
 }
 
@@ -495,6 +533,20 @@ func (iuo *ItemUpdateOne) sqlSave(ctx context.Context) (i *Item, err error) {
 			Type:   field.TypeEnum,
 			Value:  value,
 			Column: item.FieldDtype,
+		})
+	}
+	if value, ok := iuo.mutation.Author(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: item.FieldAuthor,
+		})
+	}
+	if value, ok := iuo.mutation.Isbn(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: item.FieldIsbn,
 		})
 	}
 	if nodes := iuo.mutation.RemovedCategoriesIDs(); len(nodes) > 0 {

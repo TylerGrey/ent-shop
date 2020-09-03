@@ -33,6 +33,8 @@ func (Item) Fields() []ent.Field {
 		field.Int32("stockQuantity"),
 		field.Enum("dtype").
 			Values("ALBUM", "BOOK", "MOVIE"),
+		field.String("author"),
+		field.String("isbn"),
 	}
 }
 

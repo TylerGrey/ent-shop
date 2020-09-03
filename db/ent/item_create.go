@@ -73,6 +73,18 @@ func (ic *ItemCreate) SetDtype(i item.Dtype) *ItemCreate {
 	return ic
 }
 
+// SetAuthor sets the author field.
+func (ic *ItemCreate) SetAuthor(s string) *ItemCreate {
+	ic.mutation.SetAuthor(s)
+	return ic
+}
+
+// SetIsbn sets the isbn field.
+func (ic *ItemCreate) SetIsbn(s string) *ItemCreate {
+	ic.mutation.SetIsbn(s)
+	return ic
+}
+
 // AddCategoryIDs adds the categories edge to Category by ids.
 func (ic *ItemCreate) AddCategoryIDs(ids ...int) *ItemCreate {
 	ic.mutation.AddCategoryIDs(ids...)
@@ -160,6 +172,12 @@ func (ic *ItemCreate) preSave() error {
 			return &ValidationError{Name: "dtype", err: fmt.Errorf("ent: validator failed for field \"dtype\": %w", err)}
 		}
 	}
+	if _, ok := ic.mutation.Author(); !ok {
+		return &ValidationError{Name: "author", err: errors.New("ent: missing required field \"author\"")}
+	}
+	if _, ok := ic.mutation.Isbn(); !ok {
+		return &ValidationError{Name: "isbn", err: errors.New("ent: missing required field \"isbn\"")}
+	}
 	return nil
 }
 
@@ -234,6 +252,22 @@ func (ic *ItemCreate) createSpec() (*Item, *sqlgraph.CreateSpec) {
 			Column: item.FieldDtype,
 		})
 		i.Dtype = value
+	}
+	if value, ok := ic.mutation.Author(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: item.FieldAuthor,
+		})
+		i.Author = value
+	}
+	if value, ok := ic.mutation.Isbn(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: item.FieldIsbn,
+		})
+		i.Isbn = value
 	}
 	if nodes := ic.mutation.CategoriesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

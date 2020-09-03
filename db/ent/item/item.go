@@ -24,6 +24,10 @@ const (
 	FieldStockQuantity = "stock_quantity"
 	// FieldDtype holds the string denoting the dtype field in the database.
 	FieldDtype = "dtype"
+	// FieldAuthor holds the string denoting the author field in the database.
+	FieldAuthor = "author"
+	// FieldIsbn holds the string denoting the isbn field in the database.
+	FieldIsbn = "isbn"
 
 	// EdgeCategories holds the string denoting the categories edge name in mutations.
 	EdgeCategories = "categories"
@@ -46,6 +50,8 @@ var Columns = []string{
 	FieldPrice,
 	FieldStockQuantity,
 	FieldDtype,
+	FieldAuthor,
+	FieldIsbn,
 }
 
 var (

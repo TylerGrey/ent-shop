@@ -52,5 +52,5 @@ func main() {
 	r.Static("/css", "./public/static/css")
 	r.Static("/js", "./public/static/js")
 
-	r.Run()
+	r.Run(":3000")
 }

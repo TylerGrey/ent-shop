@@ -39,7 +39,7 @@ var (
 		{Name: "zipcode", Type: field.TypeString, Nullable: true},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
-		{Name: "status", Type: field.TypeEnum, Enums: []string{"COMP", "READY"}},
+		{Name: "status", Type: field.TypeEnum, Enums: []string{"READY", "COMP"}},
 	}
 	// DeliveryTable holds the schema information for the "delivery" table.
 	DeliveryTable = &schema.Table{
@@ -57,6 +57,8 @@ var (
 		{Name: "price", Type: field.TypeInt32},
 		{Name: "stock_quantity", Type: field.TypeInt32},
 		{Name: "dtype", Type: field.TypeEnum, Enums: []string{"ALBUM", "BOOK", "MOVIE"}},
+		{Name: "author", Type: field.TypeString},
+		{Name: "isbn", Type: field.TypeString},
 	}
 	// ItemTable holds the schema information for the "item" table.
 	ItemTable = &schema.Table{
@@ -88,7 +90,7 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "order_date", Type: field.TypeTime},
-		{Name: "status", Type: field.TypeEnum, Enums: []string{"CANCEL", "ORDER"}},
+		{Name: "status", Type: field.TypeEnum, Enums: []string{"ORDER", "CANCEL"}},
 		{Name: "delivery_id", Type: field.TypeInt, Unique: true, Nullable: true},
 		{Name: "member_id", Type: field.TypeInt, Nullable: true},
 	}

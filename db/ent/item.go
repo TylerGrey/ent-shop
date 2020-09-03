@@ -28,6 +28,10 @@ type Item struct {
 	StockQuantity int32 `json:"stockQuantity,omitempty"`
 	// Dtype holds the value of the "dtype" field.
 	Dtype item.Dtype `json:"dtype,omitempty"`
+	// Author holds the value of the "author" field.
+	Author string `json:"author,omitempty"`
+	// Isbn holds the value of the "isbn" field.
+	Isbn string `json:"isbn,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ItemQuery when eager-loading is set.
 	Edges ItemEdges `json:"edges"`
@@ -61,6 +65,8 @@ func (*Item) scanValues() []interface{} {
 		&sql.NullInt64{},  // price
 		&sql.NullInt64{},  // stockQuantity
 		&sql.NullString{}, // dtype
+		&sql.NullString{}, // author
+		&sql.NullString{}, // isbn
 	}
 }
 
@@ -106,6 +112,16 @@ func (i *Item) assignValues(values ...interface{}) error {
 	} else if value.Valid {
 		i.Dtype = item.Dtype(value.String)
 	}
+	if value, ok := values[6].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field author", values[6])
+	} else if value.Valid {
+		i.Author = value.String
+	}
+	if value, ok := values[7].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field isbn", values[7])
+	} else if value.Valid {
+		i.Isbn = value.String
+	}
 	return nil
 }
 
@@ -149,6 +165,10 @@ func (i *Item) String() string {
 	builder.WriteString(fmt.Sprintf("%v", i.StockQuantity))
 	builder.WriteString(", dtype=")
 	builder.WriteString(fmt.Sprintf("%v", i.Dtype))
+	builder.WriteString(", author=")
+	builder.WriteString(i.Author)
+	builder.WriteString(", isbn=")
+	builder.WriteString(i.Isbn)
 	builder.WriteByte(')')
 	return builder.String()
 }
